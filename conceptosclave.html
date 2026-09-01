@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conceptos clave | Automatización de procesos industriales y de servicios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite: #10161d;
+    --panel: #19222b;
+    --panel-2: #1f2a34;
+    --line: #2b3946;
+    --text: #e7ecf1;
+    --muted: #8fa1b0;
+    --amber: #e8a13d;
+    --amber-dim: #a5731f;
+    --teal: #52c7bd;
+    --teal-dim: #2f7a74;
+    --radius-panel: 4px;
+    --radius-chip: 999px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--graphite);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3,h4{
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  a{ color: inherit; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  @media (max-width:640px){ .wrap{ padding: 0 20px; } }
+
+  :focus-visible{ outline: 2px solid var(--teal); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(16,22,29,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between; height: 64px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; }
+  .brand-mark{ width:26px; height:26px; border:1.5px solid var(--amber); position:relative; flex-shrink:0; }
+  .brand-mark::before{ content:""; position:absolute; inset:5px; border:1.5px solid var(--teal); }
+
+  .back-link{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size: 13.5px; color: var(--muted); text-decoration:none;
+    border: 1px solid var(--line); border-radius: var(--radius-panel);
+    padding: 8px 14px; transition: border-color .15s ease, color .15s ease;
+  }
+  .back-link:hover{ border-color: var(--teal-dim); color: var(--teal); }
+
+  /* ---------- TITLE BOX ---------- */
+  .title-section{
+    padding: 72px 0 0;
+  }
+  .title-box{
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    background: var(--panel);
+    padding: 56px 44px;
+    text-align:center;
+  }
+  .title-box-bg{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse 70% 90% at 50% 50%, black 30%, transparent 90%);
+  }
+  .title-box .eyebrow{
+    position:relative;
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--teal);
+    margin-bottom: 18px;
+  }
+  .title-box .eyebrow::before{
+    content:""; width:7px; height:7px; background: var(--teal); border-radius:50%;
+    box-shadow: 0 0 0 3px rgba(82,199,189,0.18);
+  }
+  .title-box h1{
+    position:relative;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 700;
+    color: #fff;
+  }
+  .title-box p{
+    position:relative;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 52ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  /* ---------- STUDENT INFO ROW ---------- */
+  .info-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 22px;
+    flex-wrap:wrap;
+    margin-top: 22px;
+    font-size: 13px;
+  }
+  .info-item{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-chip);
+    padding: 7px 16px;
+    background: var(--panel-2);
+    color: var(--muted);
+  }
+  .info-item strong{
+    color: var(--text);
+    font-weight: 600;
+  }
+  .info-item .dot{
+    width:5px; height:5px; border-radius:50%; background: var(--amber);
+    flex-shrink:0;
+  }
+
+  /* ---------- SECTION shared ---------- */
+  section{ padding: 76px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+
+  .section-head{ display:flex; justify-content:space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; }
+  .section-head h2{ font-size: clamp(24px, 3.2vw, 32px); color:#fff; max-width: 24ch; }
+  .section-head .desc{ color: var(--muted); max-width: 34ch; font-size: 14.5px; }
+  @media (max-width: 700px){ .section-head{ flex-direction:column; align-items:flex-start; } }
+
+  .index-tag{ font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--amber); display:block; margin-bottom: 10px; }
+
+  .prose{ color: var(--muted); font-size: 15px; max-width: 74ch; }
+  .prose p{ margin: 0 0 16px; }
+  .prose strong{ color: var(--text); font-weight:600; }
+
+  .callout{
+    border: 1px solid var(--amber-dim);
+    border-left: 3px solid var(--amber);
+    background: var(--panel);
+    border-radius: var(--radius-panel);
+    padding: 18px 22px;
+    font-size: 14.5px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .callout strong{ color: var(--amber); font-weight:600; }
+
+  /* ---------- CONCEPT GRID ---------- */
+  .concept-grid{
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px; background: var(--line); border: 1px solid var(--line);
+  }
+  .concept{ background: var(--panel); padding: 24px 22px; }
+  .concept .k{ font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--teal); display:block; margin-bottom: 12px; }
+  .concept h4{ font-size: 15.5px; color:#fff; margin-bottom: 8px; }
+  .concept p{ font-size: 13.5px; color: var(--muted); margin:0; }
+
+  /* ---------- FLOW ---------- */
+  .flow{
+    display:flex; align-items:stretch; flex-wrap:wrap; gap: 0; margin-top: 30px;
+    border: 1px solid var(--line);
+  }
+  .flow-step{
+    flex: 1 1 160px; padding: 22px 18px; background: var(--panel);
+    border-right: 1px solid var(--line);
+    display:flex; flex-direction:column; gap: 8px;
+  }
+  .flow-step:last-child{ border-right:none; }
+  .flow-step .n{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--amber); }
+  .flow-step h4{ font-size: 14.5px; color:#fff; }
+  .flow-step p{ font-size: 12.5px; color: var(--muted); margin:0; }
+  @media (max-width: 780px){
+    .flow{ flex-direction:column; }
+    .flow-step{ border-right:none; border-bottom: 1px solid var(--line); }
+    .flow-step:last-child{ border-bottom:none; }
+  }
+
+  /* ---------- COMPARISON TABLE ---------- */
+  .compare{
+    width:100%; border-collapse: collapse; margin-top: 24px;
+    font-size: 14px; border: 1px solid var(--line);
+  }
+  .compare th, .compare td{
+    text-align:left; padding: 14px 18px; border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .compare th{
+    font-family:'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .02em;
+    color: var(--amber); background: var(--panel); font-weight:500;
+  }
+  .compare td{ color: var(--muted); background: var(--panel-2); }
+  .compare td:first-child, .compare th:first-child{ color: var(--text); font-weight:500; white-space:nowrap; }
+  .compare tr:last-child td{ border-bottom:none; }
+  .table-scroll{ overflow-x:auto; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 40px 0; }
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: 14px;
+    font-size: 13px; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>APIS · Automatización</span>
+    </div>
+    <a class="back-link" href="index.html">← Catálogo</a>
+  </div>
+</nav>
+
+<!-- ============ RECUADRO DE TÍTULO ============ -->
+<section class="title-section">
+  <div class="wrap">
+    <div class="title-box">
+      <div class="title-box-bg" aria-hidden="true"></div>
+      <span class="eyebrow">TAREA 02 · UNIDAD DE FUNDAMENTOS</span>
+      <h1>Conceptos clave</h1>
+      <p>El vocabulario base para entender cómo un sistema automatizado mide, decide y actúa: de la variable de proceso al control PID.</p>
+    </div>
+
+    <div class="info-row">
+      <div class="info-item">
+        <span class="dot" aria-hidden="true"></span>
+        <span><strong>Alumna:</strong> Sánchez Rodríguez Bárbara Raquel</span>
+      </div>
+      <div class="info-item">
+        <span class="dot" aria-hidden="true"></span>
+        <span><strong>Especialidad:</strong> Inteligencia Artificial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTRODUCCIÓN ============ -->
+<section id="introduccion">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">01 — INTRODUCCIÓN</span>
+        <h2>Por qué importa este vocabulario</h2>
+      </div>
+      <p class="desc">Antes de diseñar cualquier sistema automatizado, conviene hablar el mismo idioma.</p>
+    </div>
+
+    <div class="prose">
+      <p>La automatización de procesos consiste en usar tecnologías, dispositivos y sistemas de control para ejecutar tareas de forma automática, reduciendo la intervención humana directa y haciendo que el proceso sea más eficiente, repetible y preciso.</p>
+      <p>Ya sea en un entorno <strong>industrial</strong> —líneas de producción, bandas transportadoras, hornos— o en <strong>servicios</strong> —riego, control de acceso, monitoreo ambiental—, existe un conjunto de términos que se repiten una y otra vez al describir cómo funciona el sistema. Conocerlos permite leer un diagrama, entender una hoja de datos o discutir un proyecto con precisión.</p>
+    </div>
+
+    <div class="callout">
+      <strong>Idea principal:</strong> un sistema automatizado recibe información del entorno mediante sensores, la procesa mediante un controlador, y genera una acción física mediante un actuador.
+    </div>
+  </div>
+</section>
+
+<!-- ============ EL LAZO DE CONTROL ============ -->
+<section id="lazo">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">02 — ESTRUCTURA</span>
+        <h2>El ciclo medir – decidir – actuar</h2>
+      </div>
+      <p class="desc">La secuencia que se repite dentro de cualquier sistema automatizado.</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <span class="n">01</span>
+        <h4>🌡️ Sensor</h4>
+        <p>Detecta una condición física del entorno y la convierte en una señal legible.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">02</span>
+        <h4>🧠 Controlador</h4>
+        <p>Compara la lectura contra la consigna y decide qué acción tomar.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">03</span>
+        <h4>⚙️ Actuador</h4>
+        <p>Ejecuta físicamente la corrección: enciende, mueve, abre o cierra algo.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">04</span>
+        <h4>📊 Proceso</h4>
+        <p>La variable cambia como resultado de la acción, y el ciclo vuelve a empezar.</p>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Lazo abierto</th>
+            <th>Lazo cerrado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Realimentación</td>
+            <td>No existe: la salida no se vuelve a medir.</td>
+            <td>Sí: la salida se mide y se usa para ajustar la siguiente acción.</td>
+          </tr>
+          <tr>
+            <td>Ejemplo</td>
+            <td>Temporizador de riego que abre la válvula 10 minutos, sin medir la humedad real.</td>
+            <td>Válvula que se abre hasta que el sensor de humedad indica el nivel deseado.</td>
+          </tr>
+          <tr>
+            <td>Precisión</td>
+            <td>Baja; no corrige si las condiciones cambian.</td>
+            <td>Alta; se ajusta continuamente al proceso real.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOCABULARIO ============ -->
+<section id="vocabulario">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">03 — VOCABULARIO</span>
+        <h2>Conceptos clave</h2>
+      </div>
+      <p class="desc">Los términos que aparecen una y otra vez al diseñar o describir un sistema automatizado.</p>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept">
+        <span class="k">01</span>
+        <h4>Variable de proceso</h4>
+        <p>La magnitud física que se quiere controlar: temperatura, nivel, velocidad, humedad o posición.</p>
+      </div>
+      <div class="concept">
+        <span class="k">02</span>
+        <h4>Sensor / transductor</h4>
+        <p>Convierte una magnitud física en una señal eléctrica que el controlador puede leer.</p>
+      </div>
+      <div class="concept">
+        <span class="k">03</span>
+        <h4>Actuador</h4>
+        <p>Ejecuta la acción física: motores, electroválvulas, relés, servos o resistencias de calefacción.</p>
+      </div>
+      <div class="concept">
+        <span class="k">04</span>
+        <h4>Controlador</h4>
+        <p>Toma la decisión: desde un microcontrolador como Arduino hasta un PLC industrial.</p>
+      </div>
+      <div class="concept">
+        <span class="k">05</span>
+        <h4>Consigna (setpoint)</h4>
+        <p>El valor deseado de la variable de proceso, contra el que se compara la lectura real.</p>
+      </div>
+      <div class="concept">
+        <span class="k">06</span>
+        <h4>Lazo abierto vs. cerrado</h4>
+        <p>En lazo abierto no hay realimentación; en lazo cerrado la salida corrige la siguiente acción.</p>
+      </div>
+      <div class="concept">
+        <span class="k">07</span>
+        <h4>Control PID</h4>
+        <p>Estrategia que combina el error proporcional, integral y derivativo para corregir con precisión y suavidad.</p>
+      </div>
+      <div class="concept">
+        <span class="k">08</span>
+        <h4>PLC</h4>
+        <p>Controlador lógico programable, diseñado para operar de forma robusta en entornos industriales.</p>
+      </div>
+      <div class="concept">
+        <span class="k">09</span>
+        <h4>SCADA</h4>
+        <p>Sistema de supervisión, control y adquisición de datos que centraliza la vista de varios procesos.</p>
+      </div>
+      <div class="concept">
+        <span class="k">10</span>
+        <h4>Microcontrolador</h4>
+        <p>Circuito programable capaz de recibir información, procesarla y controlar otros dispositivos.</p>
+      </div>
+      <div class="concept">
+        <span class="k">11</span>
+        <h4>Conectividad</h4>
+        <p>Comunicación entre dispositivos para compartir información y permitir monitoreo o control remoto.</p>
+      </div>
+      <div class="concept">
+        <span class="k">12</span>
+        <h4>Dato / telemetría</h4>
+        <p>Información capturada por sensores que se transmite y analiza para tomar decisiones o generar históricos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APLICACIONES ============ -->
+<section id="aplicaciones">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">04 — CONTEXTO</span>
+        <h2>Dónde se aplican estos conceptos</h2>
+      </div>
+      <p class="desc">El mismo vocabulario cambia de escenario, pero no de lógica.</p>
+    </div>
+
+    <div class="prose">
+      <p>En la <strong>industria</strong>, estos términos describen líneas de producción, bandas transportadoras y supervisión centralizada mediante SCADA. En el <strong>hogar</strong>, la misma lógica controla iluminación y climatización. En la <strong>agricultura</strong>, un sensor de humedad y una consigna deciden cuándo regar. En <strong>servicios</strong>, un lazo de control gestiona el acceso a un edificio o el monitoreo ambiental de un espacio.</p>
+    </div>
+
+    <div class="callout">
+      <strong>Conclusión:</strong> comprender sensores, actuadores, controladores, el concepto de lazo de control y las formas básicas de conectividad constituye la base para abordar cualquier proyecto de automatización, sin importar el escenario.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <a class="back-link" href="index.html">← Regresar al catálogo</a>
+    <span class="mono">Conceptos clave · Sánchez Rodríguez Bárbara Raquel · IA</span>
+  </div>
+</footer>
+
+</body>
+</html>
