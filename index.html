@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automatización de procesos industriales y de servicios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite: #10161d;
+    --panel: #19222b;
+    --panel-2: #1f2a34;
+    --line: #2b3946;
+    --text: #e7ecf1;
+    --muted: #8fa1b0;
+    --amber: #e8a13d;
+    --amber-dim: #a5731f;
+    --teal: #52c7bd;
+    --teal-dim: #2f7a74;
+    --danger: #d9634f;
+    --radius-panel: 4px;
+    --radius-chip: 999px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--graphite);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3,h4{
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  a{ color: inherit; }
+
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  @media (max-width:640px){
+    .wrap{ padding: 0 20px; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(16,22,29,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height: 64px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    font-size:15px;
+  }
+  .brand-mark{
+    width:26px; height:26px;
+    border:1.5px solid var(--amber);
+    position:relative;
+    flex-shrink:0;
+  }
+  .brand-mark::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border:1.5px solid var(--teal);
+  }
+  .nav-links{
+    display:flex;
+    gap: 28px;
+    list-style:none;
+    margin:0; padding:0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .nav-links a{
+    text-decoration:none;
+    transition: color .15s ease;
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-toggle{ display:none; }
+
+  @media (max-width: 720px){
+    .nav-links{ display:none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    padding: 96px 0 88px;
+  }
+  .hero-grid-bg{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 44px 44px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 80% 60% at 60% 20%, black 40%, transparent 90%);
+  }
+  .hero-inner{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items:center;
+  }
+  @media (max-width: 880px){
+    .hero-inner{ grid-template-columns: 1fr; }
+  }
+  .hero-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--teal);
+    margin-bottom: 22px;
+  }
+  .hero-eyebrow::before{
+    content:"";
+    width:7px; height:7px;
+    background: var(--teal);
+    border-radius:50%;
+    box-shadow: 0 0 0 3px rgba(82,199,189,0.18);
+  }
+  .hero h1{
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.08;
+    font-weight: 700;
+    color: #fff;
+    max-width: 15ch;
+  }
+  .hero p.lead{
+    margin-top: 22px;
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 46ch;
+  }
+  .hero-actions{
+    margin-top: 34px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 13px 22px;
+    font-size: 14.5px;
+    font-weight:600;
+    text-decoration:none;
+    border-radius: var(--radius-panel);
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{
+    background: var(--amber);
+    color: #1a1204;
+  }
+  .btn-primary:hover{ background:#f2b258; }
+  .btn-ghost{
+    border: 1px solid var(--line);
+    color: var(--text);
+  }
+  .btn-ghost:hover{ border-color: var(--teal); color: var(--teal); }
+
+  .hero-stats{
+    display:flex;
+    gap: 30px;
+    margin-top: 44px;
+  }
+  .stat .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight:700;
+    color:#fff;
+  }
+  .stat .label{
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .hero-visual{
+    position:relative;
+    aspect-ratio: 1/1;
+    max-width: 420px;
+    justify-self:center;
+  }
+
+  /* ---------- SECTION shared ---------- */
+  section{ padding: 92px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .section-head h2{
+    font-size: clamp(26px, 3.4vw, 34px);
+    color:#fff;
+    max-width: 20ch;
+  }
+  .section-head .desc{
+    color: var(--muted);
+    max-width: 34ch;
+    font-size: 15px;
+  }
+  @media (max-width: 700px){
+    .section-head{ flex-direction:column; align-items:flex-start; }
+  }
+
+  .index-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    display:block;
+    margin-bottom: 10px;
+  }
+
+  /* ---------- CATALOG ---------- */
+  .catalog-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 22px;
+  }
+  .card{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition: border-color .18s ease, transform .18s ease;
+  }
+  .card:hover{
+    border-color: var(--teal-dim);
+    transform: translateY(-3px);
+  }
+  .card-media{
+    aspect-ratio: 16/10;
+    background: var(--panel-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom: 1px solid var(--line);
+    position:relative;
+  }
+  .card-media svg{ width: 58%; height: 58%; }
+  .card-num{
+    position:absolute;
+    top:12px; left:12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .card-body{
+    padding: 20px 20px 20px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+  }
+  .card-body h3{
+    font-size: 17px;
+    color:#fff;
+    font-weight:600;
+    margin-bottom: 8px;
+  }
+  .card-body p{
+    font-size: 13.5px;
+    color: var(--muted);
+    flex:1;
+  }
+  .chip-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top: 16px;
+  }
+  .chip{
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: var(--radius-chip);
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .chip.on{ border-color: var(--teal-dim); color: var(--teal); }
+  .chip.amber{ border-color: var(--amber-dim); color: var(--amber); }
+
+  /* ---------- CARD BUTTON ("Ver documento") ---------- */
+  .card-button{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+    margin-top: 18px;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    background: var(--panel-2);
+    font-size: 13px;
+    font-weight:600;
+    text-decoration:none;
+    color: var(--text);
+    transition: border-color .18s ease, background .18s ease, color .18s ease;
+  }
+  .card-button .arrow{
+    font-family:'IBM Plex Mono', monospace;
+    color: var(--teal);
+    transition: transform .18s ease;
+    flex-shrink:0;
+  }
+  .card-button:hover{
+    border-color: var(--teal-dim);
+    background: rgba(82,199,189,0.08);
+    color: var(--teal);
+  }
+  .card-button:hover .arrow{ transform: translateX(4px); }
+
+  /* ---------- FUNDAMENTOS ---------- */
+  .fund-layout{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 56px;
+  }
+  @media (max-width: 880px){
+    .fund-layout{ grid-template-columns: 1fr; }
+  }
+  .fund-layout p{ color: var(--muted); font-size: 15px; margin: 0 0 16px; }
+  .fund-layout p strong{ color: var(--text); font-weight:600; }
+
+  .loop-diagram{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    padding: 28px;
+  }
+  .loop-diagram svg{ width:100%; height:auto; }
+
+  /* ---------- CONCEPTOS ---------- */
+  .concept-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .concept{
+    background: var(--panel);
+    padding: 26px 24px;
+  }
+  .concept .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--teal);
+    display:block;
+    margin-bottom: 12px;
+  }
+  .concept h4{
+    font-size: 16px;
+    color:#fff;
+    margin-bottom: 8px;
+  }
+  .concept p{
+    font-size: 13.5px;
+    color: var(--muted);
+    margin:0;
+  }
+
+  /* ---------- ARDUINO / IOT ---------- */
+  .iot-tabs{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 44px;
+  }
+  @media (max-width: 880px){
+    .iot-tabs{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px){
+    .iot-tabs{ grid-template-columns: 1fr; }
+  }
+  .iot-block{
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    padding: 22px;
+    background: var(--panel);
+  }
+  .iot-block .icon{
+    width: 34px; height:34px;
+    margin-bottom: 16px;
+    color: var(--amber);
+  }
+  .iot-block h4{
+    font-size: 15px;
+    color:#fff;
+    margin-bottom: 10px;
+  }
+  .iot-block ul{
+    margin:0; padding-left: 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .iot-block li{ margin-bottom: 6px; }
+
+  .stack-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 780px){
+    .stack-row{ grid-template-columns: 1fr; }
+  }
+  .stack-card{
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    padding: 24px;
+  }
+  .stack-card .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    margin-bottom: 10px;
+    display:block;
+  }
+  .stack-card h4{ color:#fff; font-size: 15.5px; margin-bottom: 8px; }
+  .stack-card p{ color: var(--muted); font-size: 13.5px; margin:0; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding: 40px 0;
+  }
+  .footer-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap: 14px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>APIS · Automatización</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#fundamentos">Fundamentos</a></li>
+      <li><a href="#arduino-iot">Arduino &amp; IoT</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div>
+
+      <span class="hero-eyebrow">CURSO · CONTROL Y AUTOMATIZACIÓN</span>
+      <h1>Automatización de procesos industriales y de servicios</h1>
+      <p class="lead">Un recorrido práctico por sensores, controladores y sistemas conectados: del lazo de control clásico hasta el prototipo con Arduino e IoT. Aquí reúno las tareas, prácticas y entregables del curso.</p>
+      <div class="hero-actions">
+
+
+
+        <a href="#catalogo" class="btn btn-primary">Ver catálogo de tareas</a>
+        <a href="#arduino-iot" class="btn btn-ghost">Ir a Arduino &amp; IoT</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="num">08</div>
+          <div class="label">tareas registradas</div>
+        </div>
+        <div class="stat">
+          <div class="num">03</div>
+          <div class="label">unidades temáticas</div>
+        </div>
+        <div class="stat">
+          <div class="num">IoT</div>
+          <div class="label">enfoque conectado</div>
+        </div>
+      </div>
+    </div>
+        <div class="info-row">
+      <div class="info-item">
+        <span class="dot" aria-hidden="true"></span>
+        <span><strong>Alumna:</strong> Sánchez Rodríguez Bárbara Raquel</span>
+      </div>
+      <div class="info-item">
+        <span class="dot" aria-hidden="true"></span>
+        <span><strong>Especialidad:</strong> Inteligencia Artificial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <div class="hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="150" stroke="#2b3946" stroke-width="1"/>
+        <circle cx="200" cy="200" r="108" stroke="#2b3946" stroke-width="1"/>
+        <!-- sensor node -->
+        <rect x="168" y="40" width="64" height="40" rx="3" stroke="#52c7bd" stroke-width="1.6"/>
+        <text x="200" y="64" fill="#52c7bd" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">SENSOR</text>
+        <!-- controller node -->
+        <rect x="140" y="180" width="120" height="40" rx="3" stroke="#e8a13d" stroke-width="1.6"/>
+        <text x="200" y="204" fill="#e8a13d" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">CONTROLADOR</text>
+        <!-- actuator node -->
+        <rect x="168" y="320" width="64" height="40" rx="3" stroke="#e7ecf1" stroke-width="1.6"/>
+        <text x="200" y="344" fill="#e7ecf1" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">ACTUADOR</text>
+        <!-- cloud node -->
+        <rect x="300" y="180" width="66" height="40" rx="3" stroke="#8fa1b0" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <text x="333" y="204" fill="#8fa1b0" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">NUBE</text>
+        <!-- links -->
+        <path d="M200 80 L200 180" stroke="#2b3946" stroke-width="1.4"/>
+        <path d="M200 220 L200 320" stroke="#2b3946" stroke-width="1.4"/>
+        <path d="M260 200 L300 200" stroke="#2b3946" stroke-width="1.4"/>
+        <path d="M140 200 C 90 200 90 320 168 340" stroke="#2b3946" stroke-width="1.2" fill="none" stroke-dasharray="2 4"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CATÁLOGO ============ -->
+<section id="catalogo">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">01 — CATÁLOGO</span>
+        <h2>Tareas del curso</h2>
+      </div>
+      <p class="desc"> cards </p>
+    </div>
+
+    <div class="catalog-grid">
+
+
+      <!-- Card 1 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-01</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 70 Q30 40 50 40 Q70 40 70 70" stroke="#52c7bd" stroke-width="2.5"/>
+            <line x1="20" y1="70" x2="80" y2="70" stroke="#52c7bd" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="50" cy="30" r="5" fill="#52c7bd"/>
+            <path d="M50 35 L50 40" stroke="#52c7bd" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Fundamentos de automatizacion de procesos industriales y de servicios.</h3>
+          <p>El puente entre la teoría del lazo de control y un prototipo funcional: hardware, software, protocolos y conectividad para llevar la automatización a la práctica.</p>
+          <div class="chip-row">
+            <span class="chip on">Sensores</span>
+            <span class="chip amber">Riego</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="fundamentos.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-02</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="26" stroke="#e8a13d" stroke-width="2.5"/>
+            <path d="M50 24 L50 12 M50 88 L50 76 M24 50 L12 50 M88 50 L76 50"
+                  stroke="#e8a13d"
+                  stroke-width="2.5"
+                  stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="7" fill="#e8a13d"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Conceptos clave</h3>
+          <p>Vocabulario base de la automatización: variable de proceso, sensor, actuador, controlador, consigna, lazo abierto/cerrado, PID, PLC y SCADA.</p>
+          <div class="chip-row">
+            <span class="chip on">Arduino</span>
+            <span class="chip">Control</span>
+            <span class="chip amber">PID</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="conceptosclave.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      
+
+      <!-- Card 3 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-03</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="30" width="40" height="40" rx="3" stroke="#e7ecf1" stroke-width="2.5"/>
+            <path d="M38 30 L38 20 M62 30 L62 20 M38 80 L38 70 M62 80 L62 70 M30 38 L20 38 M30 62 L20 62 M70 38 L80 38 M70 62 L80 62" stroke="#e7ecf1" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Simulación de PLC con Ladder</h3>
+          <p>Diagrama de contactos para el arranque/paro de un motor con enclavamiento y protección térmica simulada.</p>
+          <div class="chip-row">
+            <span class="chip">PLC</span>
+            <span class="chip">Ladder</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="tarea-03.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-04</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 55 Q30 25 50 40 Q70 25 80 55" stroke="#52c7bd" stroke-width="2.5"/>
+            <circle cx="50" cy="65" r="14" stroke="#52c7bd" stroke-width="2.5"/>
+            <path d="M50 65 L44 71 M50 65 L58 60" stroke="#52c7bd" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Monitoreo IoT de temperatura</h3>
+          <p>Publicación de lecturas de un sensor DHT22 a un panel en la nube mediante MQTT y visualización en tiempo real.</p>
+          <div class="chip-row">
+            <span class="chip on">IoT</span>
+            <span class="chip">MQTT</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="tarea-04.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-05</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="35" width="50" height="30" rx="3" stroke="#e8a13d" stroke-width="2.5"/>
+            <circle cx="38" cy="50" r="4" fill="#e8a13d"/>
+            <circle cx="50" cy="50" r="4" fill="#e8a13d"/>
+            <circle cx="62" cy="50" r="4" fill="#e8a13d"/>
+            <path d="M50 65 L50 78" stroke="#e8a13d" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Banda transportadora con sensores</h3>
+          <p>Conteo y clasificación de piezas mediante sensores infrarrojos y un servomotor de desvío.</p>
+          <div class="chip-row">
+            <span class="chip on">Arduino</span>
+            <span class="chip">Automatización</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="tarea-05.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-06</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 20 L50 40 M35 30 L65 30" stroke="#e7ecf1" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M28 45 Q50 35 72 45 Q80 60 65 75 Q50 85 35 75 Q20 60 28 45 Z" stroke="#e7ecf1" stroke-width="2.2"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Panel de servicios conectados</h3>
+          <p>Tablero web (dashboard) que integra dos procesos de servicio: control de acceso y monitoreo ambiental.</p>
+          <div class="chip-row">
+            <span class="chip">IoT</span>
+            <span class="chip amber">Dashboard</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="tarea-06.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-07</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="30" stroke="#52c7bd" stroke-width="2.5"/>
+            <path d="M50 30 A20 20 0 0 1 68 42" stroke="#e8a13d" stroke-width="3" stroke-linecap="round"/>
+            <path d="M50 50 L62 42" stroke="#52c7bd" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Lazo cerrado PID con Arduino</h3>
+          <p>Control de temperatura de una resistencia mediante un algoritmo PID ajustado experimentalmente.</p>
+          <div class="chip-row">
+            <span class="chip on">Control</span>
+            <span class="chip">PID</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="tarea-07.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="card-num">T-08</span>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="22" y="40" width="56" height="24" rx="12" stroke="#e7ecf1" stroke-width="2.5"/>
+            <circle cx="34" cy="52" r="6" fill="#e7ecf1"/>
+            <path d="M50 20 L50 30 M50 70 L50 80" stroke="#e7ecf1" stroke-width="2" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Cerradura inteligente con RFID</h3>
+          <p>Control de acceso a una puerta mediante tarjetas RFID y registro de eventos en una base de datos remota.</p>
+          <div class="chip-row">
+            <span class="chip on">IoT</span>
+            <span class="chip">Seguridad</span>
+          </div>
+          <!-- ENLACE AL DOCUMENTO: reemplaza el href por el archivo .html de esta tarea -->
+          <a href="tarea-08.html" class="card-button">
+            Ver documento
+            <span class="arrow mono">→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNDAMENTOS ============ -->
+<section id="fundamentos">
+  <div class="wrap fund-layout">
+    <div>
+      <span class="index-tag">02 — FUNDAMENTOS</span>
+      <h2 style="font-size:clamp(24px,3vw,30px); color:#fff; margin-bottom:20px;">Qué es automatizar un proceso</h2>
+      <p>Automatizar es <strong>transferir a un sistema técnico</strong> las tareas de medir, decidir y actuar que antes hacía una persona, para que un proceso se ejecute con menos intervención manual, de forma más repetible y segura.</p>
+      <p>En un entorno <strong>industrial</strong> esto se aplica a líneas de producción, bandas transportadoras, hornos o brazos robóticos. En un entorno de <strong>servicios</strong> se aplica a edificios inteligentes, riego, control de acceso o monitoreo ambiental: el mismo principio de medir–decidir–actuar cambia de escenario, no de lógica.</p>
+      <p>Todo sistema automatizado se apoya en un <strong>lazo de control</strong>: un sensor mide una variable del proceso, un controlador compara esa medición contra un valor deseado (consigna) y un actuador corrige la diferencia. Cuando la salida del proceso se vuelve a medir y se usa para ajustar la siguiente acción, se dice que el lazo está <strong>cerrado</strong> o que tiene <strong>realimentación</strong>.</p>
+    </div>
+
+    <div class="loop-diagram">
+      <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="120" width="110" height="60" rx="4" fill="none" stroke="#e8a13d" stroke-width="1.8"/>
+        <text x="75" y="145" fill="#e8a13d" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">CONTROLADOR</text>
+        <text x="75" y="162" fill="#8fa1b0" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">compara y decide</text>
+
+        <rect x="200" y="120" width="110" height="60" rx="4" fill="none" stroke="#e7ecf1" stroke-width="1.8"/>
+        <text x="255" y="145" fill="#e7ecf1" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">ACTUADOR</text>
+        <text x="255" y="162" fill="#8fa1b0" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">actúa sobre el proceso</text>
+
+        <rect x="200" y="20" width="110" height="55" rx="4" fill="none" stroke="#8fa1b0" stroke-width="1.6" stroke-dasharray="3 3"/>
+        <text x="255" y="42" fill="#8fa1b0" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">PROCESO</text>
+        <text x="255" y="58" fill="#8fa1b0" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">planta física</text>
+
+        <rect x="330" y="120" width="110" height="60" rx="4" fill="none" stroke="#52c7bd" stroke-width="1.8"/>
+        <text x="385" y="145" fill="#52c7bd" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">SENSOR</text>
+        <text x="385" y="162" fill="#8fa1b0" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">mide la variable</text>
+
+        <!-- consigna -->
+        <path d="M0 150 L20 150" stroke="#e8a13d" stroke-width="1.6"/>
+        <text x="2" y="140" fill="#e8a13d" font-family="IBM Plex Mono" font-size="9">consigna</text>
+
+        <!-- controlador -> actuador -->
+        <path d="M130 150 L200 150" stroke="#2b3946" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <!-- actuador -> proceso -->
+        <path d="M255 120 L255 75" stroke="#2b3946" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <!-- proceso -> sensor -->
+        <path d="M310 47 Q400 47 385 120" stroke="#2b3946" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+        <!-- sensor -> controlador (realimentación) -->
+        <path d="M330 150 Q230 210 130 172" stroke="#52c7bd" stroke-width="1.4" fill="none" stroke-dasharray="2 4" marker-end="url(#arrowteal)"/>
+        <text x="230" y="228" fill="#52c7bd" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">realimentación (feedback)</text>
+
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0 0 L8 4 L0 8 Z" fill="#2b3946"/>
+          </marker>
+          <marker id="arrowteal" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0 0 L8 4 L0 8 Z" fill="#52c7bd"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ ARDUINO & IOT ============ -->
+<section id="arduino-iot">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">04 — ENTORNO PRÁCTICO</span>
+        <h2>Arduino e Internet de las cosas</h2>
+      </div>
+      <p class="desc">El puente entre la teoría del lazo de control y un prototipo funcional sobre la mesa de trabajo.</p>
+    </div>
+
+    <div class="iot-tabs">
+      <div class="iot-block">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 6 L7 3 M12 6 L12 3 M17 6 L17 3"/></svg>
+        <h4>Hardware</h4>
+        <ul>
+          <li>Arduino UNO, Nano y Mega</li>
+          <li>ESP32 / ESP8266 con Wi‑Fi integrado</li>
+          <li>Sensores: DHT22, ultrasónico, LDR, PIR</li>
+          <li>Actuadores: servos, relés, motores DC</li>
+        </ul>
+      </div>
+      <div class="iot-block">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 4 L3 12 L8 20 M16 4 L21 12 L16 20"/></svg>
+        <h4>Software</h4>
+        <ul>
+          <li>Arduino IDE, lenguaje C/C++ simplificado</li>
+          <li>Funciones base: setup() y loop()</li>
+          <li>Librerías de sensores y comunicación</li>
+          <li>Monitor serie para depuración</li>
+        </ul>
+      </div>
+      <div class="iot-block">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 3 L12 6 M12 18 L12 21 M3 12 L6 12 M18 12 L21 12"/></svg>
+        <h4>Protocolos IoT</h4>
+        <ul>
+          <li>Wi‑Fi y Bluetooth para enlaces cortos</li>
+          <li>MQTT para publicar/suscribir datos</li>
+          <li>HTTP/REST para integraciones web</li>
+          <li>LoRa para largo alcance y bajo consumo</li>
+        </ul>
+      </div>
+      <div class="iot-block">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 18 Q4 18 4 15 Q4 12 7 12 Q7 8 12 8 Q17 8 17 12 Q20 12 20 15 Q20 18 18 18 Z"/></svg>
+        <h4>Plataformas en la nube</h4>
+        <ul>
+          <li>Node-RED para flujos visuales</li>
+          <li>ThingSpeak para graficar variables</li>
+          <li>Blynk / Home Assistant para dashboards</li>
+          <li>Bases de datos en tiempo real</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stack-row">
+      <div class="stack-card">
+        <span class="tag">PASO 1</span>
+        <h4>Adquisición</h4>
+        <p>El sensor conectado a las entradas del Arduino toma la lectura de la variable física del proceso.</p>
+      </div>
+      <div class="stack-card">
+        <span class="tag">PASO 2</span>
+        <h4>Procesamiento</h4>
+        <p>El microcontrolador ejecuta la lógica de control y decide qué hacer según la consigna establecida.</p>
+      </div>
+      <div class="stack-card">
+        <span class="tag">PASO 3</span>
+        <h4>Conectividad</h4>
+        <p>El resultado se envía por Wi‑Fi o Bluetooth hacia una plataforma IoT para visualizarlo o almacenarlo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>Automatización de procesos industriales y de servicios</span>
+    <span class="mono">Catálogo de tareas · Sanchez Rodriguez Barbara Raquel</span>
+  </div>
+</footer>
+
+</body>
+</html>
