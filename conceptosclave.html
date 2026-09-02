@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conceptos clave | Automatización de procesos industriales y de servicios</title>
+<title>Conceptos clave | Arduino e Internet de las Cosas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -42,11 +42,7 @@
   a{ color: inherit; }
   .mono{ font-family:'IBM Plex Mono', monospace; }
 
-  .wrap{
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
+  .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 32px; }
   @media (max-width:640px){ .wrap{ padding: 0 20px; } }
 
   :focus-visible{ outline: 2px solid var(--teal); outline-offset: 3px; }
@@ -62,12 +58,14 @@
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
-  .nav-inner{
-    display:flex; align-items:center; justify-content:space-between; height: 64px;
-  }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; height: 64px; }
   .brand{ display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; }
   .brand-mark{ width:26px; height:26px; border:1.5px solid var(--amber); position:relative; flex-shrink:0; }
   .brand-mark::before{ content:""; position:absolute; inset:5px; border:1.5px solid var(--teal); }
+  .nav-links{ display:flex; gap: 22px; list-style:none; margin:0; padding:0; font-size: 13.5px; color: var(--muted); }
+  .nav-links a{ text-decoration:none; transition: color .15s ease; }
+  .nav-links a:hover{ color: var(--text); }
+  @media (max-width: 780px){ .nav-links{ display:none; } }
 
   .back-link{
     display:inline-flex; align-items:center; gap:8px;
@@ -78,9 +76,7 @@
   .back-link:hover{ border-color: var(--teal-dim); color: var(--teal); }
 
   /* ---------- TITLE BOX ---------- */
-  .title-section{
-    padding: 72px 0 0;
-  }
+  .title-section{ padding: 72px 0 0; }
   .title-box{
     position: relative;
     overflow: hidden;
@@ -109,50 +105,24 @@
     content:""; width:7px; height:7px; background: var(--teal); border-radius:50%;
     box-shadow: 0 0 0 3px rgba(82,199,189,0.18);
   }
-  .title-box h1{
-    position:relative;
-    font-size: clamp(32px, 6vw, 52px);
-    font-weight: 700;
-    color: #fff;
-  }
+  .title-box h1{ position:relative; font-size: clamp(32px, 6vw, 52px); font-weight: 700; color: #fff; }
   .title-box p{
-    position:relative;
-    margin-top: 14px;
-    color: var(--muted);
-    font-size: 15px;
-    max-width: 52ch;
-    margin-left:auto;
-    margin-right:auto;
+    position:relative; margin-top: 14px; color: var(--muted); font-size: 15px;
+    max-width: 54ch; margin-left:auto; margin-right:auto;
   }
 
   /* ---------- STUDENT INFO ROW ---------- */
   .info-row{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap: 22px;
-    flex-wrap:wrap;
-    margin-top: 22px;
-    font-size: 13px;
+    display:flex; align-items:center; justify-content:center; gap: 22px; flex-wrap:wrap;
+    margin-top: 22px; font-size: 13px;
   }
   .info-item{
-    display:flex;
-    align-items:center;
-    gap: 8px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-chip);
-    padding: 7px 16px;
-    background: var(--panel-2);
-    color: var(--muted);
+    display:flex; align-items:center; gap: 8px;
+    border: 1px solid var(--line); border-radius: var(--radius-chip);
+    padding: 7px 16px; background: var(--panel-2); color: var(--muted);
   }
-  .info-item strong{
-    color: var(--text);
-    font-weight: 600;
-  }
-  .info-item .dot{
-    width:5px; height:5px; border-radius:50%; background: var(--amber);
-    flex-shrink:0;
-  }
+  .info-item strong{ color: var(--text); font-weight: 600; }
+  .info-item .dot{ width:5px; height:5px; border-radius:50%; background: var(--amber); flex-shrink:0; }
 
   /* ---------- SECTION shared ---------- */
   section{ padding: 76px 0; border-bottom: 1px solid var(--line); }
@@ -181,6 +151,38 @@
   }
   .callout strong{ color: var(--amber); font-weight:600; }
 
+  /* ---------- TIMELINE (historia) ---------- */
+  .timeline{
+    position:relative;
+    margin-top: 12px;
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+  }
+  .timeline-item{
+    position:relative;
+    padding-bottom: 30px;
+  }
+  .timeline-item:last-child{ padding-bottom:0; }
+  .timeline-item::before{
+    content:"";
+    position:absolute;
+    left: -33px;
+    top: 4px;
+    width: 9px; height:9px;
+    border-radius:50%;
+    background: var(--graphite);
+    border: 2px solid var(--teal);
+  }
+  .timeline-item .year{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    display:block;
+    margin-bottom: 6px;
+  }
+  .timeline-item h4{ font-size: 15.5px; color:#fff; margin-bottom: 6px; }
+  .timeline-item p{ font-size: 13.5px; color: var(--muted); margin:0; max-width: 62ch; }
+
   /* ---------- CONCEPT GRID ---------- */
   .concept-grid{
     display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -193,13 +195,11 @@
 
   /* ---------- FLOW ---------- */
   .flow{
-    display:flex; align-items:stretch; flex-wrap:wrap; gap: 0; margin-top: 30px;
-    border: 1px solid var(--line);
+    display:flex; align-items:stretch; flex-wrap:wrap; gap: 0; margin-top: 30px; border: 1px solid var(--line);
   }
   .flow-step{
     flex: 1 1 160px; padding: 22px 18px; background: var(--panel);
-    border-right: 1px solid var(--line);
-    display:flex; flex-direction:column; gap: 8px;
+    border-right: 1px solid var(--line); display:flex; flex-direction:column; gap: 8px;
   }
   .flow-step:last-child{ border-right:none; }
   .flow-step .n{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--amber); }
@@ -211,15 +211,27 @@
     .flow-step:last-child{ border-bottom:none; }
   }
 
+  /* ---------- BENEFICIOS / DESVENTAJAS ---------- */
+  .split-row{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 8px;
+  }
+  @media (max-width: 780px){ .split-row{ grid-template-columns: 1fr; } }
+  .split-card{
+    border: 1px solid var(--line); border-radius: var(--radius-panel);
+    padding: 26px; background: var(--panel);
+  }
+  .split-card .tag{ font-family:'IBM Plex Mono', monospace; font-size: 11px; margin-bottom: 14px; display:block; }
+  .split-card.pos .tag{ color: var(--teal); }
+  .split-card.neg .tag{ color: var(--amber); }
+  .split-card h4{ color:#fff; font-size: 16px; margin-bottom: 14px; }
+  .split-card ul{ margin:0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+  .split-card li{ margin-bottom: 8px; }
+
   /* ---------- COMPARISON TABLE ---------- */
   .compare{
-    width:100%; border-collapse: collapse; margin-top: 24px;
-    font-size: 14px; border: 1px solid var(--line);
+    width:100%; border-collapse: collapse; margin-top: 24px; font-size: 14px; border: 1px solid var(--line);
   }
-  .compare th, .compare td{
-    text-align:left; padding: 14px 18px; border-bottom: 1px solid var(--line);
-    vertical-align: top;
-  }
+  .compare th, .compare td{ text-align:left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
   .compare th{
     font-family:'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .02em;
     color: var(--amber); background: var(--panel); font-weight:500;
@@ -245,6 +257,14 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span>APIS · Automatización</span>
     </div>
+    <ul class="nav-links">
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#introduccion">Introducción</a></li>
+      <li><a href="#vocabulario">Conceptos clave</a></li>
+      <li><a href="#ciclo">Ciclo</a></li>
+      <li><a href="#ventajas">Ventajas</a></li>
+      <li><a href="#diferencias">Industria vs. servicios</a></li>
+    </ul>
     <a class="back-link" href="index.html">← Catálogo</a>
   </div>
 </nav>
@@ -254,9 +274,9 @@
   <div class="wrap">
     <div class="title-box">
       <div class="title-box-bg" aria-hidden="true"></div>
-      <span class="eyebrow">TAREA 02 · UNIDAD DE FUNDAMENTOS</span>
+      <span class="eyebrow">TAREA 01 · ENTORNO PRÁCTICO</span>
       <h1>Conceptos clave</h1>
-      <p>El vocabulario base para entender cómo un sistema automatizado mide, decide y actúa: de la variable de proceso al control PID.</p>
+      <p>Historia, vocabulario y ciclo de trabajo de la automatización aplicada con Arduino e Internet de las Cosas.</p>
     </div>
 
     <div class="info-row">
@@ -266,7 +286,52 @@
       </div>
       <div class="info-item">
         <span class="dot" aria-hidden="true"></span>
+        <span><strong>Maestro:</strong> Jordy Jesús Chirinos Balcázar</span>
+      </div>
+      <div class="info-item">
+        <span class="dot" aria-hidden="true"></span>
         <span><strong>Especialidad:</strong> Inteligencia Artificial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HISTORIA ============ -->
+<section id="historia">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">01 — HISTORIA</span>
+        <h2>De los primeros controladores al Arduino conectado</h2>
+      </div>
+      <p class="desc">Cómo la automatización llegó de la fábrica a la mesa de trabajo de cualquier estudiante.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="year">1960s</span>
+        <h4>Nace el PLC industrial</h4>
+        <p>Los controladores lógicos programables reemplazan los tableros de relés en la industria automotriz, dando inicio a la automatización moderna en fábricas.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1999</span>
+        <h4>Se acuña el término "Internet of Things"</h4>
+        <p>Kevin Ashton usa la expresión para describir un mundo donde los objetos físicos están conectados a Internet y pueden compartir datos entre sí.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">2005</span>
+        <h4>Nace Arduino</h4>
+        <p>Un equipo en Ivrea, Italia, crea una placa de código abierto pensada para que estudiantes de diseño, sin experiencia en electrónica, pudieran prototipar con facilidad.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">2010s</span>
+        <h4>Llegan los microcontroladores con Wi‑Fi</h4>
+        <p>Módulos como el ESP8266 y después el ESP32 permiten conectar proyectos tipo Arduino directamente a Internet a bajo costo, popularizando el IoT casero.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">Hoy</span>
+        <h4>Arduino + IoT como estándar educativo</h4>
+        <p>La combinación se usa para enseñar automatización tanto en la industria como en proyectos de servicios: riego, domótica, monitoreo ambiental y control de acceso.</p>
       </div>
     </div>
   </div>
@@ -277,84 +342,19 @@
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="index-tag">01 — INTRODUCCIÓN</span>
-        <h2>Por qué importa este vocabulario</h2>
+        <span class="index-tag">02 — INTRODUCCIÓN</span>
+        <h2>Qué aporta cada pieza</h2>
       </div>
-      <p class="desc">Antes de diseñar cualquier sistema automatizado, conviene hablar el mismo idioma.</p>
+      <p class="desc">Arduino resuelve el control local; el IoT resuelve la conexión con el resto del mundo.</p>
     </div>
 
     <div class="prose">
-      <p>La automatización de procesos consiste en usar tecnologías, dispositivos y sistemas de control para ejecutar tareas de forma automática, reduciendo la intervención humana directa y haciendo que el proceso sea más eficiente, repetible y preciso.</p>
-      <p>Ya sea en un entorno <strong>industrial</strong> —líneas de producción, bandas transportadoras, hornos— o en <strong>servicios</strong> —riego, control de acceso, monitoreo ambiental—, existe un conjunto de términos que se repiten una y otra vez al describir cómo funciona el sistema. Conocerlos permite leer un diagrama, entender una hoja de datos o discutir un proyecto con precisión.</p>
+      <p>Trabajar con <strong>Arduino</strong> significa programar una placa que puede leer sensores, tomar decisiones simples y controlar actuadores. Trabajar con <strong>IoT</strong> significa, además, conectar esa placa a una red para compartir esos datos o recibir órdenes a distancia.</p>
+      <p>Ambos mundos comparten un vocabulario propio: términos de hardware (pines, PWM, placa), de software (IDE, librería, sketch) y de conectividad (protocolo, broker, dashboard). Conocerlos permite leer la documentación de un sensor, entender un tutorial o discutir un proyecto con precisión.</p>
     </div>
 
     <div class="callout">
-      <strong>Idea principal:</strong> un sistema automatizado recibe información del entorno mediante sensores, la procesa mediante un controlador, y genera una acción física mediante un actuador.
-    </div>
-  </div>
-</section>
-
-<!-- ============ EL LAZO DE CONTROL ============ -->
-<section id="lazo">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="index-tag">02 — ESTRUCTURA</span>
-        <h2>El ciclo medir – decidir – actuar</h2>
-      </div>
-      <p class="desc">La secuencia que se repite dentro de cualquier sistema automatizado.</p>
-    </div>
-
-    <div class="flow">
-      <div class="flow-step">
-        <span class="n">01</span>
-        <h4>🌡️ Sensor</h4>
-        <p>Detecta una condición física del entorno y la convierte en una señal legible.</p>
-      </div>
-      <div class="flow-step">
-        <span class="n">02</span>
-        <h4>🧠 Controlador</h4>
-        <p>Compara la lectura contra la consigna y decide qué acción tomar.</p>
-      </div>
-      <div class="flow-step">
-        <span class="n">03</span>
-        <h4>⚙️ Actuador</h4>
-        <p>Ejecuta físicamente la corrección: enciende, mueve, abre o cierra algo.</p>
-      </div>
-      <div class="flow-step">
-        <span class="n">04</span>
-        <h4>📊 Proceso</h4>
-        <p>La variable cambia como resultado de la acción, y el ciclo vuelve a empezar.</p>
-      </div>
-    </div>
-
-    <div class="table-scroll">
-      <table class="compare">
-        <thead>
-          <tr>
-            <th>Característica</th>
-            <th>Lazo abierto</th>
-            <th>Lazo cerrado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Realimentación</td>
-            <td>No existe: la salida no se vuelve a medir.</td>
-            <td>Sí: la salida se mide y se usa para ajustar la siguiente acción.</td>
-          </tr>
-          <tr>
-            <td>Ejemplo</td>
-            <td>Temporizador de riego que abre la válvula 10 minutos, sin medir la humedad real.</td>
-            <td>Válvula que se abre hasta que el sensor de humedad indica el nivel deseado.</td>
-          </tr>
-          <tr>
-            <td>Precisión</td>
-            <td>Baja; no corrige si las condiciones cambian.</td>
-            <td>Alta; se ajusta continuamente al proceso real.</td>
-          </tr>
-        </tbody>
-      </table>
+      <strong>Idea principal:</strong> Arduino aporta la interacción directa con el mundo físico —leer y actuar—; el IoT aporta la conexión de esa interacción con una red, para monitorear o controlar el sistema desde cualquier lugar.
     </div>
   </div>
 </section>
@@ -367,91 +367,207 @@
         <span class="index-tag">03 — VOCABULARIO</span>
         <h2>Conceptos clave</h2>
       </div>
-      <p class="desc">Los términos que aparecen una y otra vez al diseñar o describir un sistema automatizado.</p>
+      <p class="desc">Los términos que aparecen una y otra vez al trabajar con Arduino e Internet de las Cosas.</p>
     </div>
 
     <div class="concept-grid">
       <div class="concept">
         <span class="k">01</span>
-        <h4>Variable de proceso</h4>
-        <p>La magnitud física que se quiere controlar: temperatura, nivel, velocidad, humedad o posición.</p>
+        <h4>Placa / microcontrolador</h4>
+        <p>El circuito programable —como un Arduino UNO o un ESP32— que ejecuta el programa y controla las entradas y salidas.</p>
       </div>
       <div class="concept">
         <span class="k">02</span>
-        <h4>Sensor / transductor</h4>
-        <p>Convierte una magnitud física en una señal eléctrica que el controlador puede leer.</p>
+        <h4>Pin digital / analógico</h4>
+        <p>Los puntos de conexión de la placa. Los digitales leen 0/1 (HIGH/LOW); los analógicos leen un rango de voltaje.</p>
       </div>
       <div class="concept">
         <span class="k">03</span>
-        <h4>Actuador</h4>
-        <p>Ejecuta la acción física: motores, electroválvulas, relés, servos o resistencias de calefacción.</p>
+        <h4>PWM</h4>
+        <p>Modulación por ancho de pulso: simula una salida analógica encendiendo y apagando un pin digital muy rápido, útil para controlar brillo o velocidad.</p>
       </div>
       <div class="concept">
         <span class="k">04</span>
-        <h4>Controlador</h4>
-        <p>Toma la decisión: desde un microcontrolador como Arduino hasta un PLC industrial.</p>
+        <h4>Sketch</h4>
+        <p>El nombre que recibe un programa de Arduino, organizado siempre en las funciones setup() y loop().</p>
       </div>
       <div class="concept">
         <span class="k">05</span>
-        <h4>Consigna (setpoint)</h4>
-        <p>El valor deseado de la variable de proceso, contra el que se compara la lectura real.</p>
+        <h4>Librería</h4>
+        <p>Código reutilizable que facilita trabajar con un sensor, pantalla o protocolo específico sin escribirlo desde cero.</p>
       </div>
       <div class="concept">
         <span class="k">06</span>
-        <h4>Lazo abierto vs. cerrado</h4>
-        <p>En lazo abierto no hay realimentación; en lazo cerrado la salida corrige la siguiente acción.</p>
+        <h4>Baudios</h4>
+        <p>La velocidad de comunicación del puerto serie, usada para depurar el programa desde la computadora.</p>
       </div>
       <div class="concept">
         <span class="k">07</span>
-        <h4>Control PID</h4>
-        <p>Estrategia que combina el error proporcional, integral y derivativo para corregir con precisión y suavidad.</p>
+        <h4>Sensor / actuador</h4>
+        <p>El sensor mide una condición física (temperatura, humedad, distancia); el actuador ejecuta una acción (motor, relé, LED).</p>
       </div>
       <div class="concept">
         <span class="k">08</span>
-        <h4>PLC</h4>
-        <p>Controlador lógico programable, diseñado para operar de forma robusta en entornos industriales.</p>
+        <h4>ESP32 / ESP8266</h4>
+        <p>Microcontroladores con Wi‑Fi y Bluetooth integrados, usados cuando el proyecto necesita conectividad además de control.</p>
       </div>
       <div class="concept">
         <span class="k">09</span>
-        <h4>SCADA</h4>
-        <p>Sistema de supervisión, control y adquisición de datos que centraliza la vista de varios procesos.</p>
+        <h4>Protocolo IoT</h4>
+        <p>La forma en que los dispositivos intercambian datos: MQTT, HTTP/REST, Bluetooth o LoRa, según alcance y consumo necesarios.</p>
       </div>
       <div class="concept">
         <span class="k">10</span>
-        <h4>Microcontrolador</h4>
-        <p>Circuito programable capaz de recibir información, procesarla y controlar otros dispositivos.</p>
+        <h4>Broker MQTT</h4>
+        <p>El servidor intermediario que recibe los mensajes publicados por un dispositivo y los distribuye a quienes están suscritos.</p>
       </div>
       <div class="concept">
         <span class="k">11</span>
-        <h4>Conectividad</h4>
-        <p>Comunicación entre dispositivos para compartir información y permitir monitoreo o control remoto.</p>
+        <h4>Dashboard</h4>
+        <p>El panel visual —en plataformas como ThingSpeak o Home Assistant— donde se grafican y monitorean los datos en tiempo real.</p>
       </div>
       <div class="concept">
         <span class="k">12</span>
-        <h4>Dato / telemetría</h4>
-        <p>Información capturada por sensores que se transmite y analiza para tomar decisiones o generar históricos.</p>
+        <h4>Telemetría</h4>
+        <p>El conjunto de datos que un dispositivo remoto envía periódicamente para su monitoreo o análisis histórico.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ APLICACIONES ============ -->
-<section id="aplicaciones">
+<!-- ============ EL CICLO DE LA AUTOMATIZACIÓN ============ -->
+<section id="ciclo">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="index-tag">04 — CONTEXTO</span>
-        <h2>Dónde se aplican estos conceptos</h2>
+        <span class="index-tag">04 — CICLO</span>
+        <h2>El ciclo de la automatización con Arduino e IoT</h2>
       </div>
-      <p class="desc">El mismo vocabulario cambia de escenario, pero no de lógica.</p>
+      <p class="desc">De la lectura del sensor al dato visible en la nube, y de vuelta a una acción física.</p>
     </div>
 
-    <div class="prose">
-      <p>En la <strong>industria</strong>, estos términos describen líneas de producción, bandas transportadoras y supervisión centralizada mediante SCADA. En el <strong>hogar</strong>, la misma lógica controla iluminación y climatización. En la <strong>agricultura</strong>, un sensor de humedad y una consigna deciden cuándo regar. En <strong>servicios</strong>, un lazo de control gestiona el acceso a un edificio o el monitoreo ambiental de un espacio.</p>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="n">01</span>
+        <h4>🌡️ Sensor</h4>
+        <p>Un componente como el DHT22 o un sensor ultrasónico entrega una lectura a un pin de Arduino.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">02</span>
+        <h4>🧠 Sketch</h4>
+        <p>El programa, corriendo en loop(), procesa la lectura y decide qué hacer con ella según la consigna.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">03</span>
+        <h4>⚙️ Actuador</h4>
+        <p>Arduino ejecuta la corrección local: enciende un relé, mueve un servo o activa una alarma.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">04</span>
+        <h4>📡 Módulo de red</h4>
+        <p>Un ESP32 envía el dato hacia un broker o servidor mediante un protocolo IoT como MQTT.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">05</span>
+        <h4>☁️ Dashboard</h4>
+        <p>Una plataforma en la nube recibe, almacena y muestra el dato, cerrando el ciclo con monitoreo remoto.</p>
+      </div>
     </div>
 
-    <div class="callout">
-      <strong>Conclusión:</strong> comprender sensores, actuadores, controladores, el concepto de lazo de control y las formas básicas de conectividad constituye la base para abordar cualquier proyecto de automatización, sin importar el escenario.
+    <div class="callout" style="margin-top:26px;">
+      <strong>Nota:</strong> cuando el dashboard también puede enviar una orden de vuelta al Arduino (por ejemplo, "apagar el actuador"), el ciclo se cierra por completo y se habla de un sistema con realimentación remota.
+    </div>
+  </div>
+</section>
+
+<!-- ============ VENTAJAS Y DESVENTAJAS ============ -->
+<section id="ventajas">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">05 — BALANCE</span>
+        <h2>Ventajas y desventajas de usar Arduino e IoT</h2>
+      </div>
+      <p class="desc">Ideal para prototipar y aprender, pero con límites claros frente a un entorno industrial.</p>
+    </div>
+
+    <div class="split-row">
+      <div class="split-card pos">
+        <span class="tag">VENTAJAS</span>
+        <h4>Lo que se gana</h4>
+        <ul>
+          <li>Bajo costo de entrada: placas, sensores y módulos accesibles.</li>
+          <li>Código abierto y una comunidad enorme con ejemplos y librerías listas.</li>
+          <li>Prototipado rápido: de la idea al circuito funcionando en horas.</li>
+          <li>Fácil de conectar a la nube gracias a módulos como el ESP32.</li>
+        </ul>
+      </div>
+      <div class="split-card neg">
+        <span class="tag">DESVENTAJAS</span>
+        <h4>Lo que limita</h4>
+        <ul>
+          <li>Procesamiento y memoria limitados frente a un PLC industrial.</li>
+          <li>Menor robustez ante ruido eléctrico, vibración o ambientes extremos.</li>
+          <li>Riesgos de seguridad si el dispositivo se conecta sin cifrado ni autenticación.</li>
+          <li>No certificado para procesos industriales críticos o de alta responsabilidad.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIFERENCIAS INDUSTRIA VS SERVICIOS ============ -->
+<section id="diferencias">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="index-tag">06 — CONTEXTO</span>
+        <h2>Automatización industrial vs. de servicios</h2>
+      </div>
+      <p class="desc">El mismo ciclo sensor–controlador–actuador cambia de exigencias según el escenario.</p>
+    </div>
+
+    <div class="table-scroll">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Aspecto</th>
+            <th>Procesos industriales</th>
+            <th>Procesos de servicios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Escenario típico</td>
+            <td>Líneas de producción, bandas transportadoras, hornos, brazos robóticos.</td>
+            <td>Edificios inteligentes, riego, control de acceso, monitoreo ambiental.</td>
+          </tr>
+          <tr>
+            <td>Controlador habitual</td>
+            <td>PLC o sistemas SCADA, diseñados para alta disponibilidad y entornos exigentes.</td>
+            <td>Arduino, ESP32 u otras placas de bajo costo orientadas a prototipos y proyectos medianos.</td>
+          </tr>
+          <tr>
+            <td>Tolerancia a fallos</td>
+            <td>Muy baja: un fallo puede detener una línea de producción completa o causar pérdidas grandes.</td>
+            <td>Más flexible: un fallo suele afectar comodidad o eficiencia, no la operación crítica de un negocio.</td>
+          </tr>
+          <tr>
+            <td>Conectividad</td>
+            <td>Redes industriales especializadas (Modbus, Profibus) además de IoT para monitoreo.</td>
+            <td>Wi‑Fi, MQTT y plataformas de consumo como Home Assistant o ThingSpeak.</td>
+          </tr>
+          <tr>
+            <td>Ejemplo con Arduino/IoT</td>
+            <td>Prototipo educativo de una banda transportadora antes de escalarlo a un PLC real.</td>
+            <td>Sistema de riego automatizado o cerradura inteligente con RFID, listos para uso directo.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:26px;">
+      <strong>Conclusión:</strong> Arduino e IoT son ideales para aprender y prototipar el ciclo de automatización en ambos escenarios; al pasar a producción industrial de alta exigencia, ese mismo ciclo suele migrar a equipos certificados como un PLC.
     </div>
   </div>
 </section>
@@ -459,7 +575,7 @@
 <footer>
   <div class="wrap footer-inner">
     <a class="back-link" href="index.html">← Regresar al catálogo</a>
-    <span class="mono">Conceptos clave · Sánchez Rodríguez Bárbara Raquel · IA</span>
+    <span class="mono">Conceptos clave · Arduino e IoT · Sánchez Rodríguez Bárbara Raquel</span>
   </div>
 </footer>
 
