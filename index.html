@@ -217,6 +217,34 @@
     margin-top: 2px;
   }
 
+  /* ---------- STUDENT INFO ROW (alumna · maestro · especialidad) ---------- */
+  .info-row{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    flex-wrap:wrap;
+    margin-top: 28px;
+    font-size: 13px;
+  }
+  .info-item{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-chip);
+    padding: 7px 16px;
+    background: var(--panel-2);
+    color: var(--muted);
+  }
+  .info-item strong{
+    color: var(--text);
+    font-weight: 600;
+  }
+  .info-item .dot{
+    width:5px; height:5px; border-radius:50%; background: var(--amber);
+    flex-shrink:0;
+  }
+
   .hero-visual{
     position:relative;
     aspect-ratio: 1/1;
@@ -505,9 +533,6 @@
       <h1>Automatización de procesos industriales y de servicios</h1>
       <p class="lead">Un recorrido práctico por sensores, controladores y sistemas conectados: del lazo de control clásico hasta el prototipo con Arduino e IoT. Aquí reúno las tareas, prácticas y entregables del curso.</p>
       <div class="hero-actions">
-
-
-
         <a href="#catalogo" class="btn btn-primary">Ver catálogo de tareas</a>
         <a href="#arduino-iot" class="btn btn-ghost">Ir a Arduino &amp; IoT</a>
       </div>
@@ -525,19 +550,22 @@
           <div class="label">enfoque conectado</div>
         </div>
       </div>
-    </div>
-        <div class="info-row">
-      <div class="info-item">
-        <span class="dot" aria-hidden="true"></span>
-        <span><strong>Alumna:</strong> Sánchez Rodríguez Bárbara Raquel</span>
+
+      <div class="info-row">
+        <div class="info-item">
+          <span class="dot" aria-hidden="true"></span>
+          <span><strong>Alumna:</strong> Sánchez Rodríguez Bárbara Raquel</span>
+        </div>
+        <div class="info-item">
+          <span class="dot" aria-hidden="true"></span>
+          <span><strong>Maestro:</strong> Jordy Jesús Chirinos Balcázar</span>
+        </div>
+        <div class="info-item">
+          <span class="dot" aria-hidden="true"></span>
+          <span><strong>Especialidad:</strong> Inteligencia Artificial</span>
+        </div>
       </div>
-      <div class="info-item">
-        <span class="dot" aria-hidden="true"></span>
-        <span><strong>Especialidad:</strong> Inteligencia Artificial</span>
-      </div>
     </div>
-  </div>
-</section>
 
     <div class="hero-visual" aria-hidden="true">
       <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -573,7 +601,7 @@
         <span class="index-tag">01 — CATÁLOGO</span>
         <h2>Tareas del curso</h2>
       </div>
-      <p class="desc"> cards </p>
+      <p class="desc">cards</p>
     </div>
 
     <div class="catalog-grid">
@@ -924,7 +952,7 @@
 <footer>
   <div class="wrap footer-inner">
     <span>Automatización de procesos industriales y de servicios</span>
-    <span class="mono">Catálogo de tareas · Sanchez Rodriguez Barbara Raquel</span>
+    <span class="mono">Catálogo de tareas · Sánchez Rodríguez Bárbara Raquel</span>
   </div>
 </footer>
 
